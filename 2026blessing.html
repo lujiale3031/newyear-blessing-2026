@@ -1,0 +1,161 @@
+帮我生成它的html文件：
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新年快乐</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            900: '#064e3b',
+                            800: '#065f46',
+                            700: '#047857',
+                            600: '#059669',
+                            500: '#10b981',
+                            400: '#34d399',
+                            300: '#6ee7b7',
+                            200: '#a7f3d0',
+                            100: '#d1fae5'
+                        },
+                        green: {
+                            900: '#0f766e',
+                            800: '#15803d',
+                            700: '#166534',
+                            600: '#16a34a',
+                            500: '#22c55e',
+                            400: '#4ade80',
+                            300: '#86efac',
+                            200: '#bbf7d0',
+                            100: '#dcfce7'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .card-glass {
+                backdrop-filter: blur(8px);
+                background-color: rgba(6, 78, 59, 0.5);
+                border-color: rgba(4, 120, 87, 0.3);
+            }
+        }
+    </style>
+</head>
+
+<body class="relative min-h-screen overflow-hidden bg-gradient-to-br from-emerald-900 to-green-900 text-white">
+    <canvas id="particleCanvas" class="absolute top-0 left-0 w-full h-full opacity-30"></canvas>
+
+    <div class="relative z-10 container mx-auto px-4 py-12 max-w-4xl">
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-green-300 to-emerald-400">
+                新年快乐
+            </h1>
+            <p class="text-xl text-emerald-200">来自韩服客服团队的祝福~</p>
+        </header>
+
+        <div class="card-glass rounded-lg border max-w-2xl mx-auto">
+            <div class="p-8">
+                <div class="flex items-center mb-6">
+                    <div class="bg-emerald-500 p-3 rounded-full mr-4">
+                        <span class="text-2xl">🤝</span>
+                    </div>
+                    <h2 class="text-2xl font-semibold">致各位同事</h2>
+                </div>
+
+                <div class="space-y-4 text-emerald-100 leading-relaxed">
+                    <p>感谢各位同事浏览本年度总结，并提出宝贵的意见和建议。</p>
+                    <p>你们的反馈不仅帮助我们更全面地回顾与思考，也为今后的工作改进提供了重要参考。</p>
+                    <p>希望在新的一年里，能与大家继续交流与协作，共同提升韩服客服团队的服务水平与业务能力。</p>
+                </div>
+
+                <div class="mt-8 flex justify-center">
+                    <button id="showBlessingBtn"
+                        class="bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-700 hover:to-emerald-600 px-8 py-3 text-lg rounded-md transition duration-300">
+                        特别祝福 🎉
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="blessingDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-gradient-to-br from-emerald-800 to-green-900 border border-emerald-600/30 rounded-lg p-6 max-w-md w-full mx-4">
+            <div class="mb-4">
+                <h3 class="text-2xl font-bold">特别祝福 🎉</h3>
+                <p class="text-emerald-200 mt-2">来自客服团队的心意</p>
+            </div>
+            <div class="py-6 text-center space-y-4">
+                <p class="text-xl">提前祝大家新年快乐，万事如意，</p>
+                <p class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-300 to-emerald-300">
+                    2026年马到成功！
+                </p>
+            </div>
+            <div class="mt-6 text-right">
+                <button id="closeDialogBtn"
+                    class="bg-gradient-to-r from-emerald-500 to-green-500 py-2 px-4 rounded-md transition duration-300">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const canvas = document.getElementById('particleCanvas');
+            const ctx = canvas.getContext('2d');
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            const particles = [];
+            const particleCount = 100;
+
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 3 + 1,
+                    speed: Math.random() * 2 + 0.5,
+                    angle: Math.random() * Math.PI * 2,
+                    color: `hsl(${Math.random() * 60 + 100}, 70%, 60%)`
+                });
+            }
+
+            function drawParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color;
+                    ctx.fill();
+                    p.x += Math.cos(p.angle) * p.speed;
+                    p.y += Math.sin(p.angle) * p.speed;
+                    if (p.x < 0 || p.x > canvas.width || p.y < 0 || p.y > canvas.height) {
+                        p.x = Math.random() * canvas.width;
+                        p.y = Math.random() * canvas.height;
+                    }
+                });
+                requestAnimationFrame(drawParticles);
+            }
+            drawParticles();
+
+            const dialog = document.getElementById('blessingDialog');
+            document.getElementById('showBlessingBtn').onclick = () => dialog.classList.remove('hidden');
+            document.getElementById('closeDialogBtn').onclick = () => dialog.classList.add('hidden');
+            dialog.onclick = e => { if (e.target === dialog) dialog.classList.add('hidden'); };
+        });
+    </script>
+</body>
+</html>
